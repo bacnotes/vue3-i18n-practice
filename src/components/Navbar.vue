@@ -29,6 +29,7 @@
 <script>
 import { computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
+
 export default {
   setup() {
     const store = useStore();
@@ -56,7 +57,6 @@ export default {
         path: "/about",
       },
     ];
-
     function toggleMenu() {
       isActive.value = !isActive.value;
     }

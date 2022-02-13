@@ -1,17 +1,47 @@
 <template>
   <div class="wrapper">
-    <Card v-for="item in 30" :key="item.index" />
+    <Card v-for="user in userData.userList" :key="user.login.uuid" :user="user"/>
   </div>
 </template>
 
 <script>
+import { onMounted, reactive} from "vue";
 import Card from "@/components/Card";
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils";
 export default {
   name: "Home",
   components: {
     Card,
   },
-  setup() {},
+  setup() {
+    const userData = reactive({ userList: [] });
+    userData.userList = JSON.parse(localStorage.getItem("userList"));
+    async function fetchData() {
+      try {
+        const response = await userAPI.getUsers(30);
+        const data = response.data.results;
+         console.log(data)
+        if (response.status !== 200) {
+          throw new Error();
+        }
+        // 存到localStorage
+        console.log(data)
+        localStorage.setItem("userList", JSON.stringify(data));
+        userData.userList = [...data];
+      } catch (error) {
+        Toast.fire({
+          icon: "warning",
+          title: "無法獲取資料，請稍後再試",
+        });
+      }
+    }
+
+    onMounted(() => {
+      fetchData();
+    });
+    return { userData };
+  },
 };
 </script>
 
