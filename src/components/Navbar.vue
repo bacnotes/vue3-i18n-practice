@@ -77,7 +77,7 @@ export default {
     @apply flex justify-between;
   }
   &__menu {
-    @apply flex flex-col items-center mt-3 gap-5;
+    @apply flex flex-col items-center mt-5 gap-5;
     &__item {
       @apply hover:text-red-300;
     }
