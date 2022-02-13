@@ -4,8 +4,22 @@ import Home from "../views/Home.vue";
 const routes = [
   {
     path: "/",
-    name: "Home",
+    redirect: "/users"
+  },
+  {
+    path: "/users",
+    name: "Users",
     component: Home,
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: () => import("./../views/About.vue"),
+  },
+  {
+    path: "/schedule",
+    name: "Schedule",
+    component: () => import("./../views/Schedule.vue"),
   },
 ];
 
