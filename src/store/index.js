@@ -7,6 +7,7 @@ export default createStore({
       state.windowWidth = value;
     },
   },
-  actions: {},
+  actions: {
+  },
   modules: {},
 });

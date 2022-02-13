@@ -4,7 +4,7 @@ import Home from "../views/Home.vue";
 const routes = [
   {
     path: "/",
-    redirect: "/users"
+    redirect: "/users",
   },
   {
     path: "/users",
@@ -12,9 +12,9 @@ const routes = [
     component: Home,
   },
   {
-    path: "/about",
-    name: "About",
-    component: () => import("./../views/About.vue"),
+    path: "/chat",
+    name: "Chat",
+    component: () => import("./../views/Chat.vue"),
   },
   {
     path: "/schedule",

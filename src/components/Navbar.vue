@@ -11,59 +11,68 @@
   </button>
   <nav class="navbar">
     <router-link to="/"
-      ><h1 class="navbar__title">Amazing Tour</h1>
+      ><h1 class="navbar__title">{{ t("website.title") }}</h1>
     </router-link>
     <ul v-show="sizeChange >= 576 || isActive" class="navbar__menu">
-      <li
-        v-for="item in menu.menuList"
-        :key="item.id"
-        class="navbar__menu__item"
-      >
+      <li v-for="item in menu" :key="item.id" class="navbar__menu__item">
         <router-link :to="item.path" class="navbar-link">
           {{ item.title }}</router-link
         >
       </li>
     </ul>
   </nav>
+  <select class="lang" v-model="locale" @change="selectChange($event)">
+    <option class="lang--option" value="en">en</option>
+    <option class="lang--option" value="jp">jp</option>
+  </select>
 </template>
 <script>
-import { computed, ref, reactive } from "vue";
+import { watch, computed, ref } from "vue";
 import { useStore } from "vuex";
-
+import { useI18n } from "vue-i18n";
 export default {
   setup() {
+    let { t, locale } = useI18n();
     const store = useStore();
     const isActive = ref(false);
-    const menu = reactive({ menuList: [] });
+    const menu = computed(() => [
+      {
+        id: 1,
+        title: t("menu.users"),
+        path: "/users",
+      },
+      {
+        id: 2,
+        title: t("menu.schedule"),
+        path: "/schedule",
+      },
+      {
+        id: 2,
+        title: t("menu.chat"),
+        path: "/chat",
+      },
+    ]);
     const sizeChange = computed(() => store.state.windowWidth);
     window.addEventListener("resize", detectWindowWidth);
     function detectWindowWidth() {
       store.commit("setWindowWidth", window.innerWidth);
     }
-    menu.menuList = [
-      {
-        id: 1,
-        title: "Users",
-        path: "/users",
-      },
-      {
-        id: 2,
-        title: "Tour Schedule",
-        path: "/schedule",
-      },
-      {
-        id: 2,
-        title: "About Us",
-        path: "/about",
-      },
-    ];
+    watch(locale, (newlocale) => {
+      localStorage.setItem("locale", newlocale);
+    });
+
     function toggleMenu() {
       isActive.value = !isActive.value;
     }
-    return { isActive, menu, sizeChange, toggleMenu };
+
+    function selectChange(event) {
+      locale = event.target.value;
+    }
+    return { t, locale, isActive, menu, sizeChange, toggleMenu, selectChange };
   },
 };
 </script>
+
 <style lang="scss" scoped>
 .router-link-exact-active {
   @apply text-red-300 underline font-semibold;
@@ -166,4 +175,32 @@ export default {
   @apply w-11;
   transform: translate3d(0, -10px, 0) rotate(-45deg);
 }
+
+.lang {
+  @apply absolute top-8 right-5 rounded;
+}
 </style>
+<i18n>
+{
+  "en": {
+    "website":  {
+      "title":"Amazing Tour"
+    },
+    "menu": {
+      "users": "Tour Guides",
+      "schedule": "Tour Schedule",
+      "chat": "Public Chatroom"
+    }
+  },
+  "jp":{
+    "website": {
+      "title": "アメージングツアー"
+    },
+    "menu": {
+      "users": "ガイドさん",
+      "schedule": "スケジュール",
+      "chat": "公開チャットローム"
+    } 
+  }
+}
+</i18n>

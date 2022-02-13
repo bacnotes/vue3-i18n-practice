@@ -10,7 +10,9 @@
       aria-describedby="user-photo"
     />
     <div class="card__content">
-      <span class="card__content--tag">{{ user.gender === 'male' ? '♂' : '♀' }}</span>
+      <span class="card__content--tag">{{
+        user.gender === "male" ? "♂" : "♀"
+      }}</span>
       <span class="card__content--tag">{{ user.dob.age }}</span>
       <span class="card__content--tag">{{ user.location.city }}</span>
     </div>
@@ -37,7 +39,7 @@ export default {
     @apply object-cover rounded;
   }
   &__content {
-    @apply flex items-center;
+    @apply flex flex-wrap items-center;
     &--tag {
       @apply inline-block bg-gray-200 rounded px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
     }

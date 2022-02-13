@@ -1,11 +1,15 @@
 <template>
   <div class="wrapper">
-    <Card v-for="user in userData.userList" :key="user.login.uuid" :user="user"/>
+    <Card
+      v-for="user in userData.userList"
+      :key="user.login.uuid"
+      :user="user"
+    />
   </div>
 </template>
 
 <script>
-import { onMounted, reactive} from "vue";
+import { onMounted, reactive } from "vue";
 import Card from "@/components/Card";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils";
@@ -21,12 +25,9 @@ export default {
       try {
         const response = await userAPI.getUsers(30);
         const data = response.data.results;
-         console.log(data)
         if (response.status !== 200) {
           throw new Error();
         }
-        // 存到localStorage
-        console.log(data)
         localStorage.setItem("userList", JSON.stringify(data));
         userData.userList = [...data];
       } catch (error) {
